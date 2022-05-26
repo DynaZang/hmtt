@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "build": "webpack",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
@@ -29,6 +29,12 @@
     "eslint-plugin-vue": "^8.0.3",
     "less": "^4.0.0",
     "less-loader": "^8.0.0",
-    "vue-template-compiler": "^2.6.14"
-  }
+    "vue-template-compiler": "^2.6.14",
+    "webpack": "5.31.2",
+    "webpack-cli": "4.9.0"
+  },
+  
+  "main": "index.js",
+  "author": "Zang <30139392+DynaZang@users.noreply.github.com>",
+  "license": "MIT"
 }
