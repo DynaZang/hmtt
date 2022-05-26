@@ -4,6 +4,9 @@
 
 <script>
 export default {
+  created(){
+    const res = await new Promise()
+  },
   name: 'HmttApp',
 
   data () {
