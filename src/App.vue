@@ -1,6 +1,6 @@
 <template>
   <div>
-    黑马头条移动版本
+    <router-view></router-view>
   </div>
 </template>
 
