@@ -4,19 +4,16 @@
 
 <script>
 export default {
-  created() {
-    const res = await new Promise();
-  },
-  name: "HmttApp",
+  name: 'HmttApp',
 
-  data() {
-    return {};
+  data () {
+    return {}
   },
 
-  mounted() {},
+  mounted () {},
 
-  methods: {},
-};
+  methods: {}
+}
 </script>
 
 <style lang="scss" scoped>
