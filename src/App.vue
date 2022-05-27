@@ -1,20 +1,22 @@
 <template>
-  <div></div>
+  <div>
+    黑马头条移动版本
+  </div>
 </template>
 
 <script>
+import { getAllChannelsAPI } from '@/api'
 export default {
-  name: 'HmttApp',
-
-  data () {
-    return {}
-  },
-
-  mounted () {},
-
-  methods: {}
+  async created () {
+    try {
+      const res = await getAllChannelsAPI()
+      console.log(res)
+    } catch (err) {
+      console.log(err)
+    }
+  }
 }
 </script>
 
-<style lang="scss" scoped>
+<style >
 </style>
