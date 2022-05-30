@@ -70,6 +70,12 @@ export default {
         console.log(res)
         Notify({ type: 'success', message: '登录成功！！！' })
         setToken(res.data.data.token)
+        // 跳转到主页：'/layout/home',跳转一定要写在最后，尽量最后执行
+        // this.$router.push 会产生历史记录，可以后退
+        // this.$router.replace 会直接替换，不可以后退，没有历史记录
+        this.$router.replace({
+          path: '/layout/home'
+        })
       } catch (err) {
         Notify({ type: 'danger', message: '帐号或者密码错误' })
       }

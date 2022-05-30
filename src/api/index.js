@@ -3,6 +3,7 @@
 // 逻辑页面中导入这个接口方法，就能使用请求了
 // 好处：请求url路径，可以在这里统一进行管理
 import request from '@/utils/request.js'
+import { getToken } from '@/utils/token.js'
 
 // 登录接口
 // axios内部，会把参数对象转成json字符串格式发给后台
@@ -24,3 +25,24 @@ export const getAllChannelsAPI = () => {
     method: 'GET'
   })
 }
+// 获取用户频道列表
+// 不登陆时默认返回后台设置的默认频道
+export const getUserChannelsAPI = () =>
+  request({
+    url: '/v1_0/user/channels',
+    headers: {
+      Authorization: `Bearer ${getToken()}`
+    }
+  })
+// 获取文章新闻推荐
+export const getAllArticleListAPI = ({ channel_id, timestamp }) =>
+  request({
+    url: '/v1_0/articles',
+    headers: {
+      Authorization: `Bearer ${getToken()}`
+    },
+    params: {
+      channel_id,
+      timestamp
+    }
+  })
