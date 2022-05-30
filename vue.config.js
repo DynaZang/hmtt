@@ -14,7 +14,7 @@ module.exports = defineConfig({
           // 'nav-bar-text-color': 'white',
           // 或者可以通过 less 文件覆盖（文件路径为绝对路径）
           // __dirname（两个下划线），是node下的全局内置变量，显示当前文件夹的绝对路径
-          hack: `true; @import "${path.join(__dirname, '/src/styles/cover.less')}";`
+          hack: `true; @import "${path.resolve(__dirname, 'src/styles/cover.less')}";`
         }
       }
     }

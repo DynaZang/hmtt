@@ -3,9 +3,12 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import 'amfe-flexible'
-import { NavBar } from 'vant'
+import { NavBar, Form, Field, Button } from 'vant'
 
+Vue.use(Form)
+Vue.use(Field)
 Vue.use(NavBar)
+Vue.use(Button)
 /*
   组件使用套路:
   1. 明确目标，找到类似组件
