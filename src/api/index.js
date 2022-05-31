@@ -46,3 +46,15 @@ export const getAllArticleListAPI = ({ channel_id, timestamp }) =>
       timestamp
     }
   })
+// 对文章不喜欢
+export const articlesDislikeAPI = ({ target }) =>
+  request({
+    url: '/v1_0/article/dislikes',
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${getToken()}`
+    },
+    data: {
+      target: target
+    }
+  })
