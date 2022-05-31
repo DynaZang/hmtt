@@ -70,7 +70,7 @@ export default {
   height: 30px;
 }
 .tab {
-  padding-top: 46px;
+  padding-top: 1.226667rem;
   // 顶部tab预留间距
 }
 </style>
