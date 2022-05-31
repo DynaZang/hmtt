@@ -15,6 +15,8 @@
           v-for="obj in list"
           :key="obj.art_id"
           :artobj="obj"
+          @disLike="disLikeFn"
+          @reports="reportsFn"
         ></article-item>
       </van-list>
     </van-pull-refresh>
@@ -27,8 +29,9 @@
 此时标签先挂载了，没有高度，所以onload也判断触底更新了
 */
 import ArticleItem from './ArticleItem.vue'
-import { getAllArticleListAPI } from '@/api/index.js'
-
+import { getAllArticleListAPI, articlesDislikeAPI, articleReportsAPI } from '@/api/index.js'
+import { Notify } from 'vant'
+import { secondActions } from '@/api/report'
 export default {
   props: {
     // list: Array // 文章列表数组(不再需要了，只要频道id)
@@ -56,6 +59,7 @@ export default {
         channel_id: this.channelID,
         timestamp: this.theTimestamp
       })
+      console.log(res)
       // 下一页第一篇文章的时间戳pre_timestamp
       this.list = [...this.list, ...res.data.data.results]
       // 下一页第一篇文章的时间戳pre_timestamp
@@ -82,6 +86,25 @@ export default {
       this.list = []
       this.theTimestamp = new Date().getTime()
       this.getArticleList()
+    },
+    // 反馈不感兴趣
+    async disLikeFn (id) {
+      // console.log(`id ${id}`)
+      try {
+        await articlesDislikeAPI({ target: id })
+        // res没什么有用信息，所以await往下放行，证明响应成功
+        Notify({ type: 'success', message: '反馈成功' })
+      } catch (err) {
+        Notify({ type: 'warning', message: '反馈失败-联系程序员' })
+      }
+    },
+    async reportsFn (id, type) {
+      try {
+        await articleReportsAPI({ target: id, type: secondActions[type].name })
+        Notify({ type: 'success', message: '举报成功' })
+      } catch (err) {
+        Notify({ type: 'warning', message: '举报失败-联系程序员' })
+      }
     }
   }
 }

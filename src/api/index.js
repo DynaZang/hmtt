@@ -58,3 +58,18 @@ export const articlesDislikeAPI = ({ target }) =>
       target: target
     }
   })
+// 文章举报
+export const articleReportsAPI = ({ target, type, remark }) => {
+  return request({
+    url: '/v1_0/article/reports',
+    method: 'POST',
+    data: {
+      target: target,
+      type: type,
+      remark: 'remark'
+    },
+    headers: {
+      Authorization: `Bearer ${getToken()}`
+    }
+  })
+}
