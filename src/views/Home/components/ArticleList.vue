@@ -95,7 +95,7 @@ export default {
         // res没什么有用信息，所以await往下放行，证明响应成功
         Notify({ type: 'success', message: '反馈成功' })
       } catch (err) {
-        Notify({ type: 'warning', message: '反馈失败-联系程序员' })
+        // Notify({ type: 'warning', message: '反馈失败-联系程序员' })
       }
     },
     async reportsFn (id, type) {
