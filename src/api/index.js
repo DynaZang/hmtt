@@ -60,3 +60,14 @@ export const articleReportsAPI = ({ target, type, remark }) => {
     }
   })
 }
+
+// 频道 - 更新已选
+export const updateChannelAPI = ({ channels }) => {
+  return request({
+    url: '/v1_0/user/channels',
+    method: 'PUT',
+    data: {
+      channels: channels
+    }
+  })
+}

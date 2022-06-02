@@ -20,19 +20,28 @@
         <article-list :channelID = "channelId"></article-list>
         </van-tab>
       </van-tabs>
+      <!-- 编辑频道图标 -->
+      <van-icon name="plus" @click="showPopup" size="0.37333334rem" class="moreChannels"/>
+      <!-- 点击+号后的弹出层 -->
+      <van-popup v-model="show" :style="{ height: '100vh', width: '100vw' }" get-container="body" >
+        <ChannelEdit @close="show=false" :userList="userChannelList" :unSelectedList="unSelectedChannelList" @addChannel="addChannelFn"></ChannelEdit>
+      </van-popup>
     </div>
   </div>
 </template>
 
 <script>
-import { getUserChannelsAPI } from '@/api/index.js'
+import { getUserChannelsAPI, getAllChannelsAPI, updateChannelAPI } from '@/api/index.js'
 import ArticleList from './components/ArticleList.vue'
+import ChannelEdit from './channelEdit'
 export default {
   data () {
     return {
       channelId: 0, // 导航栏默认选中
-      userChannelList: [] // 用户选择频道列表
+      allChannelList: [], // 所有频道列表
+      userChannelList: [], // 用户选择频道列表
       // articleList: [] // 文章列表
+      show: false // 控制频道管理弹出层
     }
   },
   // created 在首页打开就请求一次，后续不会更新，需要监测tab切换
@@ -40,9 +49,10 @@ export default {
   async created () {
     // 获得用户频道
     const res = await getUserChannelsAPI()
-    console.log(res)
     this.userChannelList = res.data.data.channels // 保存用户频道列表
     // this.channelChange()
+    const res1 = await getAllChannelsAPI()
+    this.allChannelList = res1.data.data.channels
   },
   methods: {
     // tab切换事件
@@ -55,9 +65,62 @@ export default {
     //   console.log(res2)
     //   this.articleList = res2.data.data.results
     // }
+    showPopup () {
+      this.show = true
+    },
+    // 添加频道
+    async addChannelFn (channelObj) {
+      // 把用户选择的频道数据推送给后台
+      // 需要对存储频道数据的数组进行修改，后台要求id:频道id seq:顺序序号
+      // 现在是频道id和频道名
+      this.userChannelList.push(channelObj)
+      //   const newArr = this.userChannelList.filter(obj => obj.id !== 0)// 筛选掉推荐频道
+      //   // filter筛选出来后的newArr和userChannList保存的都是同一个对象的内存地址，所以后续删除会影响原频道数据中的name
+      //   newArr.push(channelObj)
+      //   newArr.forEach((obj, index) => {
+      //     // delete 对象.属性 可以删除键值对
+      //     delete obj.name
+      //     obj.seq = index
+      //   })
+      //   await updateChannelAPI({
+      //     channels: newArr
+      //   })
+      // }
+      // 以上代码出现问题，新增时删除了频道名字
+      const newArr = this.userChannelList.filter(obj => obj.id !== 0)// 筛选掉推荐频道
+      // filter筛选出来后的newArr和userChannList保存的都是同一个对象的内存地址，所以后续删除会影响原频道数据中的name
+      const theNewArr = newArr.map((obj, index) => {
+        const newObj = { ...obj }
+        delete newObj.name
+        newObj.seq = index
+        return newObj // 用map方法收集新对象形成一个新数组
+      })
+      await updateChannelAPI({
+        channels: theNewArr
+      })
+    }
   },
   components: {
-    ArticleList
+    ArticleList,
+    ChannelEdit
+  },
+  computed: {
+    unSelectedChannelList () {
+      const newArr = this.allChannelList.filter(bigobj => {
+        const index = this.userChannelList.findIndex(smallObj => {
+          return smallObj.id === bigobj.id
+        })
+        // 如果找到了
+        if (index > -1) {
+          return false
+          // 不存入数组
+        } else {
+          return true
+        }
+      })
+
+      return newArr
+    }
   }
 }
 </script>
@@ -72,5 +135,18 @@ export default {
 .tab {
   padding-top: 46px;
   // 顶部tab预留间距
+}
+// 设置 tabs 容器的样式
+/deep/ .van-tabs__wrap {
+  padding-right: 30px;
+  background-color: #fff;
+}
+
+// 设置小图标的样式
+.moreChannels {
+  position: fixed;
+  top: 62px;
+  right: 8px;
+  z-index: 999;
 }
 </style>
