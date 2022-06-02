@@ -30,6 +30,25 @@ export const getUserChannelsAPI = () =>
   request({
     url: '/v1_0/user/channels'
   })
+
+// 频道 - 更新已选
+export const updateChannelAPI = ({ channels }) => {
+  return request({
+    url: '/v1_0/user/channels',
+    method: 'PUT',
+    data: {
+      channels: channels
+    }
+  })
+}
+
+// 频道 - 删除频道
+export const deleteChannelAPI = ({ target }) =>
+  request({
+    url: `/v1_0/user/channels/${target}`,
+    method: 'DELETE'
+  })
+
 // 获取文章新闻推荐
 export const getAllArticleListAPI = ({ channel_id, timestamp }) =>
   request({
@@ -57,17 +76,6 @@ export const articleReportsAPI = ({ target, type, remark }) => {
       target: target,
       type: type,
       remark: 'remark'
-    }
-  })
-}
-
-// 频道 - 更新已选
-export const updateChannelAPI = ({ channels }) => {
-  return request({
-    url: '/v1_0/user/channels',
-    method: 'PUT',
-    data: {
-      channels: channels
     }
   })
 }

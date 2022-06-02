@@ -18,7 +18,7 @@
       </div>
       <!-- 我的频道列表 -->
       <van-row type="flex">
-        <van-col span="6" v-for="obj in userList" :key="obj.id">
+        <van-col span="6" v-for="obj in userList" :key="obj.id" @click="channelClickFn(obj)">
           <div class="channel-item van-hairline--surround">
             {{obj.name}}
             <!-- 删除的徽标 -->
@@ -68,6 +68,18 @@ export default {
       if (this.isEdit === true) { // 处于编辑状态
       // 如果不遵守单向数据流，直接更改this。userList
         this.$emit('addChannel', channelObj)
+      }
+    },
+    // 用户点击频道事件
+    channelClickFn (channelObj) {
+      if (this.isEdit === true) {
+        if (channelObj.id !== 0) {
+          this.$emit('removeChannel', channelObj)
+        }
+      } else {
+        // isEdit为false是切换频道
+        this.$emit('close')
+        this.$emit('input', channelObj.id)// 父组件绑定了v-model，子组件要传值给父组件
       }
     }
   }

@@ -14,24 +14,51 @@
     </div>
     <!-- tab栏导航: 每个van-tab 代表一个标签导航，中间夹着内容，对应着下属列表内容 -->
     <!-- van-tabs循环了很多标签导航，与之一一对应的内容列表不是一开始就创建的，而是触发后创建的 -->
-    <div class="tab" >
-      <van-tabs v-model="channelId" animated sticky offset-top="1.226667rem" >
-        <van-tab  v-for="index in userChannelList" :title="index.name" :key="index.id" :name = "index.id">
-        <article-list :channelID = "channelId"></article-list>
+    <div class="tab">
+      <van-tabs v-model="channelId" animated sticky offset-top="1.226667rem">
+        <van-tab
+          v-for="index in userChannelList"
+          :title="index.name"
+          :key="index.id"
+          :name="index.id"
+        >
+          <article-list :channelID="channelId"></article-list>
         </van-tab>
       </van-tabs>
       <!-- 编辑频道图标 -->
-      <van-icon name="plus" @click="showPopup" size="0.37333334rem" class="moreChannels"/>
+      <van-icon
+        name="plus"
+        @click="showPopup"
+        size="0.37333334rem"
+        class="moreChannels"
+      />
       <!-- 点击+号后的弹出层 -->
-      <van-popup v-model="show" :style="{ height: '100vh', width: '100vw' }" get-container="body" >
-        <ChannelEdit @close="show=false" :userList="userChannelList" :unSelectedList="unSelectedChannelList" @addChannel="addChannelFn"></ChannelEdit>
+      <van-popup
+        v-model="show"
+        :style="{ height: '100vh', width: '100vw' }"
+        get-container="body"
+      >
+        <ChannelEdit
+          @close="show = false"
+          :userList="userChannelList"
+          :unSelectedList="unSelectedChannelList"
+          @addChannel="addChannelFn"
+          @removeChannel="removeChannelFn"
+          v-model="channelId"
+        >
+        </ChannelEdit>
       </van-popup>
     </div>
   </div>
 </template>
 
 <script>
-import { getUserChannelsAPI, getAllChannelsAPI, updateChannelAPI } from '@/api/index.js'
+import {
+  getUserChannelsAPI,
+  getAllChannelsAPI,
+  updateChannelAPI,
+  deleteChannelAPI
+} from '@/api/index.js'
 import ArticleList from './components/ArticleList.vue'
 import ChannelEdit from './channelEdit'
 export default {
@@ -87,7 +114,7 @@ export default {
       //   })
       // }
       // 以上代码出现问题，新增时删除了频道名字
-      const newArr = this.userChannelList.filter(obj => obj.id !== 0)// 筛选掉推荐频道
+      const newArr = this.userChannelList.filter((obj) => obj.id !== 0) // 筛选掉推荐频道
       // filter筛选出来后的newArr和userChannList保存的都是同一个对象的内存地址，所以后续删除会影响原频道数据中的name
       const theNewArr = newArr.map((obj, index) => {
         const newObj = { ...obj }
@@ -98,6 +125,15 @@ export default {
       await updateChannelAPI({
         channels: theNewArr
       })
+    },
+    // 删除频道
+    async removeChannelFn (channelObj) {
+      const index = this.userChannelList.findIndex(obj => obj.id === channelObj.id)
+      this.userChannelList.splice(index, 1)
+      const res = await deleteChannelAPI({
+        target: channelObj.id
+      })
+      console.log(res)
     }
   },
   components: {
@@ -106,8 +142,8 @@ export default {
   },
   computed: {
     unSelectedChannelList () {
-      const newArr = this.allChannelList.filter(bigobj => {
-        const index = this.userChannelList.findIndex(smallObj => {
+      const newArr = this.allChannelList.filter((bigobj) => {
+        const index = this.userChannelList.findIndex((smallObj) => {
           return smallObj.id === bigobj.id
         })
         // 如果找到了
