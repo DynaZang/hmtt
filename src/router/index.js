@@ -4,6 +4,7 @@ import login_Index from '@/views/Login/login_index.vue'
 import Home from '@/views/Home'
 import Layout from '@/views/Layout'
 import User from '@/views/User'
+import Search from '@/views/Search'
 
 Vue.use(VueRouter)
 
@@ -29,6 +30,10 @@ const routes = [
         component: User
       }
     ]
+  },
+  {
+    path: '/search',
+    component: Search
   }
 ]
 

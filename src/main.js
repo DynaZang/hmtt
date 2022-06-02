@@ -6,8 +6,10 @@ import 'amfe-flexible'
 import {
   NavBar, Form, Field, Button, Tabbar, TabbarItem,
   Icon, Tab, Tabs, Cell, CellGroup, List, PullRefresh, ActionSheet, Popup, Col, Row, Badge
+  , Search
 } from 'vant'
 
+Vue.use(Search)
 Vue.use(Badge)
 Vue.use(Col)
 Vue.use(Row)

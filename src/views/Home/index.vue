@@ -8,7 +8,8 @@
           <img class="logo" src="@/assets/logo.png" alt="" />
         </template>
         <template #right>
-          <van-icon color="#fff" name="search" size="18px" />
+          <!-- 搜索图标 -->
+          <van-icon color="#fff" name="search" size="18px" @click="$router.push('/search')"/>
         </template>
       </van-nav-bar>
     </div>
